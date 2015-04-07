@@ -1,3 +1,19 @@
+while True:
+    try:
+        test = int(input("what is"))
+        print(test)
+        break
+    except ValueError:
+        print("error input")
+    except NameError:
+        print("error input")
+    except:
+        print("error")
+    finally:
+        print("end")
+
+
+'''
 test = int(input("what is"))
 
 print(test)
@@ -5,7 +21,7 @@ print(test)
 
 
 
-'''
+
 #fw = open('test.txt', 'w')
 
 #fw.write('testing \n test2')
