@@ -1,122 +1,21 @@
-class Main:
-    name = "sazzad"
-    age = 12
+class Parent():
+    def m1(self):
+        print("m1")
 
-    def __init__(self, x,city):
-        self.age = x
-        #instance variable
-        self.city = city
+class Other():
+    def m4(self):
+        print("m4")
 
-    def getNameAndAge(self):
-        return self.name, self.age, self.city
-
-
-ma = Main(111,'dhaka')
-ma2 = Main(111,'ctg')
-print(ma.getNameAndAge())
-print(ma2.getNameAndAge())
-
-'''
-while True:
-    try:
-        test = int(input("what is"))
-        print(test)
-        break
-    except ValueError:
-        print("error input")
-    except NameError:
-        print("error input")
-    except:
-        print("error")
-    finally:
-        print("end")
+class Child(Parent, Other):
+    def m2(self):
+        print("m2")
+    def m1(self):
+        print("m3")
+class test():
+    pass
 
 
-
-test = int(input("what is"))
-
-print(test)
-
-
-
-
-
-#fw = open('test.txt', 'w')
-
-#fw.write('testing \n test2')
-#fw.close()
-
-fileRead = open('test.txt', 'r')
-
-text = fileRead.read()
-print(text)
-fileRead.close()
-
-
-
-
-
-import test
-
-test.m1()
-
-
-
-test = {
-    'ema': 'test',
-    'test': 'test2'
-}
-
-# print(test['ema'])
-
-for k, v in test.items():
-    print(k + v)
-
-
-test = {1, 2, 3, 4, 5, 1}
-
-print(test)
-
-if 11 in test:
-    print("yes")
-else:
-    print("No")
-
-
-def numbers(*args):
-    total = 0;
-
-    for a in args:
-        total += a
-    print(total)
-
-
-numbers(10, 20)
-
-
-__author__ = 'lynas'
-
-
-def m1():
-    print("hello world")
-
-
-m1()
-
-
-def add2number(output='output : ', num1=1, num2=3):
-    return output, num1 + num2
-
-
-print add2number(num1=10, num2=20)
-
-print "hello world"
-print("test")
-
-
-test = [1,5,9,12]
-for n in range(1, 20):
-    if n in test:
-        continue
-    print(n)
-'''
+obj = Child()
+obj.m1()
+obj.m2()
+obj.m4()
