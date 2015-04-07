@@ -1,3 +1,13 @@
+
+
+
+'''
+import test
+
+test.m1()
+
+
+
 test = {
     'ema': 'test',
     'test': 'test2'
@@ -8,7 +18,7 @@ test = {
 for k, v in test.items():
     print(k + v)
 
-'''
+
 test = {1, 2, 3, 4, 5, 1}
 
 print(test)
