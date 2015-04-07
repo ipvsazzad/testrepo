@@ -1,3 +1,26 @@
+class Main:
+    name = "sazzad"
+    age = 12
+
+    def getNameAndAge(self):
+        return self.name,self.age
+
+ma = Main()
+print(ma.getNameAndAge())
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
 while True:
     try:
         test = int(input("what is"))
@@ -13,7 +36,7 @@ while True:
         print("end")
 
 
-'''
+
 test = int(input("what is"))
 
 print(test)
