@@ -2,15 +2,19 @@ class Main:
     name = "sazzad"
     age = 12
 
-    def __init__(self, x):
+    def __init__(self, x,city):
         self.age = x
+        #instance variable
+        self.city = city
 
     def getNameAndAge(self):
-        return self.name, self.age
+        return self.name, self.age, self.city
 
 
-ma = Main(111)
+ma = Main(111,'dhaka')
+ma2 = Main(111,'ctg')
 print(ma.getNameAndAge())
+print(ma2.getNameAndAge())
 
 '''
 while True:
