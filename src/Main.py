@@ -1,21 +1,12 @@
-class Parent():
-    def m1(self):
-        print("m1")
+import threading
 
-class Other():
-    def m4(self):
-        print("m4")
+class class1(threading.Thread):
+    def run(self):
+        for _ in range(10):
+            print(threading.currentThread().getName())
 
-class Child(Parent, Other):
-    def m2(self):
-        print("m2")
-    def m1(self):
-        print("m3")
-class test():
-    pass
+var1 = class1(name='11111')
+var2 = class1(name='2222')
 
-
-obj = Child()
-obj.m1()
-obj.m2()
-obj.m4()
+var1.start()
+var2.start()
