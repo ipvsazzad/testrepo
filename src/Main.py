@@ -1,3 +1,11 @@
+test = int(input("what is"))
+
+print(test)
+
+
+
+
+'''
 #fw = open('test.txt', 'w')
 
 #fw.write('testing \n test2')
@@ -12,7 +20,7 @@ fileRead.close()
 
 
 
-'''
+
 import test
 
 test.m1()
