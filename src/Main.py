@@ -1,3 +1,13 @@
+test = {1, 2, 3, 4, 5, 1}
+
+print(test)
+
+if 11 in test:
+    print("yes")
+else:
+    print("No")
+
+'''
 def numbers(*args):
     total = 0;
 
@@ -8,7 +18,7 @@ def numbers(*args):
 
 numbers(10, 20)
 
-'''
+
 __author__ = 'lynas'
 
 
