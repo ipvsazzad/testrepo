@@ -1,3 +1,14 @@
+test = {
+    'ema': 'test',
+    'test': 'test2'
+}
+
+# print(test['ema'])
+
+for k, v in test.items():
+    print(k + v)
+
+'''
 test = {1, 2, 3, 4, 5, 1}
 
 print(test)
@@ -7,7 +18,7 @@ if 11 in test:
 else:
     print("No")
 
-'''
+
 def numbers(*args):
     total = 0;
 
