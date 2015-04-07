@@ -1,3 +1,14 @@
+#fw = open('test.txt', 'w')
+
+#fw.write('testing \n test2')
+#fw.close()
+
+fileRead = open('test.txt', 'r')
+
+text = fileRead.read()
+print(text)
+fileRead.close()
+
 
 
 
