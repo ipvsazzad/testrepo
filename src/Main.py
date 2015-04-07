@@ -1,12 +1,7 @@
-import threading
 
-class class1(threading.Thread):
-    def run(self):
-        for _ in range(10):
-            print(threading.currentThread().getName())
+a, b, c = [1, 2, 3]
 
-var1 = class1(name='11111')
-var2 = class1(name='2222')
+print(c)
 
-var1.start()
-var2.start()
+
+
