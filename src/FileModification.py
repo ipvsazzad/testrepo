@@ -8,10 +8,13 @@ for line in lines:
     if modificationWord in line:
         newValue = raw_input("enter New Value : ")
         lineArray = line.split(':')
-        lines[lineCounter] = ''
         lines[lineCounter] = lineArray[0] + ':' + newValue + '\n'
+        print("edit successful")
         break
     lineCounter += 1
-fileWriter = open('dbconfig.conf', 'w')
-fileWriter.writelines(lines)
-fileWriter.close()
+if lineCounter == len(lines):
+    print("keyword not found")
+else:
+    fileWriter = open('dbconfig.conf', 'w')
+    fileWriter.writelines(lines)
+    fileWriter.close()
