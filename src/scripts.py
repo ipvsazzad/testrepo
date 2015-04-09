@@ -1,6 +1,9 @@
 import subprocess
 
-def changeName(test):
-    subprocess.call(test, shell=True)
 
-changeName("ls -al")
+def changeName(test):
+    abv = subprocess.call(test, shell=True)
+    print abv
+
+
+changeName("ls -a9l")

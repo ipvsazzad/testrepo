@@ -1,0 +1,44 @@
+#add disk
+
+#see disk
+fdisk -l
+
+#partition disk
+fdisk /dev/diskName
+n
+p (#enter enter until you see m press w to save change)
+
+#LVM creation
+#create volume group
+vgcreate exvg /dev/disk_name (exvg is the name)
+
+#create logical volume
+lvcreate -n nameOfLV -L 10G groupName (10G is the size)
+
+#create directory for the mounting point
+mkdir /mountPointName
+
+#formate or create disk directory of the lvm
+mkfs.xfs /dev/lvmGroupName/lvmName
+
+#mount for user use
+vim /etc/fstab
+#add line add the end
+UUID="06876202-c15a-4513-a276-2e1248eedda1"     /lvdata2        xfs defaults    0 0  (1. uid of the /dev/vgname/lvname
+                                                                                            can be found using
+                                                                                            (blkid /dev/vgname/lvname)
+                                                                                     2. mount point
+                                                                                     3. disk partition type
+                                                                                     4. default for use can read,write
+                                                                                     and execute
+                                                                                     5. 1 to enable dump taking
+                                                                                     6. if crash check after position
+                                                                                        0 for no check
+                                                                                     )
+#save and exit
+#update mount
+mount -a
+#check change
+df -h
+
+
