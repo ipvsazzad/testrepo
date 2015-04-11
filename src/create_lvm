@@ -8,6 +8,8 @@ fdisk /dev/diskName
 n
 p (#enter enter until you see m press w to save change)
 
+pvcreate /dev/disk_name
+
 #LVM creation
 #create volume group
 vgcreate exvg /dev/disk_name (exvg is the name)
