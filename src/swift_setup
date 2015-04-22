@@ -1,0 +1,222 @@
+#swift setup in a clean pc
+
+1. add 3 disk in the vm
+2. partition those drive and mount
+    a. mkfs.xfs -f -L d1 /dev/vdb
+    b. mkfs.xfs -f -L d2 /dev/vdc
+    c. mkfs.xfs -f -L d3 /dev/vdd
+
+    d. blkid (this gives id for each file system)
+        e.g /dev/vdb: LABEL="d1" UUID="5a56ab5d-3b89-4ff3-a962-1d899195434c" TYPE="xfs"
+
+    e.  mkdir /srv/node/d1
+        mkdir /srv/node/d2
+        mkdir /srv/node/d3
+
+
+    f. vim vim /etc/fstab
+        f1. add uid of 3 new label in followin order
+            UUID=5a56ab5d-3b89-4ff3-a962-1d899195434c       /srv/node/d1      xfs     defaults        0 0
+            UUID=b5b75763-175e-47f9-94e6-6ba78db7cd8b       /srv/node/d2      xfs     defaults        0 0
+            UUID=a2fca2b4-80a6-4b5e-849a-37def7c179f5       /srv/node/d3      xfs     defaults        0 0
+
+    g. reboot (reboot the system)
+
+3. install dependecies
+
+    yum install -y git curl gcc memcached rsync sqlite xfsprogs git-core libffi-devel xinetd python-setuptools python-coverage python-devel python-nose python-simplejson pyxattr python-eventlet python-greenlet python-paste-deploy python-netifaces python-pip python-dns python-mock
+
+4. easy_install pip
+5. pip install PasteDeploy simplejson eventlet netifaces mock
+6. Installing the Swift CLI
+    cd /opt
+    git clone https://github.com/openstack/python-swiftclient.git
+    cd /opt/python-swiftclient; sudo pip install -r requirements.txt;
+    python setup.py install; cd ..
+7. Installing Swift
+
+    cd /opt
+    git clone https://github.com/openstack/swift.git
+    cd /opt/swift ; sudo python setup.py install; cd ..
+
+8. Copying in Swift Configuration Files
+    mkdir -p /etc/swift
+    cd /opt/swift/etc
+    cp account-server.conf-sample /etc/swift/account-server.conf
+    cp container-server.conf-sample /etc/swift/container-server.conf
+    cp object-server.conf-sample /etc/swift/object-server.conf
+    cp proxy-server.conf-sample /etc/swift/proxy-server.conf
+    cp drive-audit.conf-sample /etc/swift/drive-audit.conf
+    cp swift.conf-sample /etc/swift/swift.conf
+
+#At this point, you should be able to run the swift-init command with the help flag
+#and get the help message:
+#swift-init -h
+#This command is similar to service or start|stop; it allows you to start/stop/reload
+#Swift processes. However, don’t try to start Swift up just yet.
+
+9. useradd swift
+10. chown -R swift:swift /srv/node
+11. create ring builder file
+    swift-ring-builder account.builder create 17 3 1
+    swift-ring-builder container.builder create 17 3 1
+    swift-ring-builder object.builder create 17 3 1
+
+12. Adding Drives to these builder file
+
+    swift-ring-builder account.builder add r1z1-127.0.0.1:6002/d1 100
+    swift-ring-builder container.builder add r1z1-127.0.0.1:6001/d1 100
+    swift-ring-builder object.builder add r1z1-127.0.0.1:6000/d1 100
+
+    swift-ring-builder account.builder add r1z1-127.0.0.1:6002/d2 100
+    swift-ring-builder container.builder add r1z1-127.0.0.1:6001/d2 100
+    swift-ring-builder object.builder add r1z1-127.0.0.1:6000/d2 100
+
+    swift-ring-builder account.builder add r1z1-127.0.0.1:6002/d3 100
+    swift-ring-builder container.builder add r1z1-127.0.0.1:6001/d3 100
+    swift-ring-builder object.builder add r1z1-127.0.0.1:6000/d3 100
+
+13. Building the Rings
+
+    cd /etc/swift
+    swift-ring-builder account.builder rebalance
+    swift-ring-builder container.builder rebalance
+    swift-ring-builder object.builder rebalance
+
+14. For logging
+    vim /etc/rsyslog.d/0-swift.conf
+    add line(local0.* /var/log/swift/all.log) and save
+    mkdir /var/log/swift
+    chown -R root:adm /var/log/swift
+    chmod -R g+w /var/log/swift
+    service rsyslog restart
+
+15. set prefix and suffix
+    vim /etc/swift/swift.conf
+    (change following and save)
+    swift_hash_path_suffix = RzUfDdu32L7J2ZBDYgsD6YI3Xie7hTVO8/oaQbpTbI8=
+    swift_hash_path_prefix = OZ1uQJNjJzTuFaM8X3v%fsJ1iR#F8wJjf9uhRiABevQ4
+
+16. Starting the Proxy Server
+    swift-init proxy start
+
+17. Starting memcached
+    service memcached start
+    chkconfig memcached on
+
+18. setup temp auth user
+
+    vim /etc/swift/proxy-server.conf
+
+    [filter:tempauth]
+    use = egg:swift#tempauth
+    user_test_tester3 = testing3
+    user_myaccount_me = secretpassword .admin .reseller_admin
+    user_myaccount_me = secretpassword .admin .reseller_admin <storage URL:8080>
+
+    allow_account_management = true
+    account_autocreate = true
+
+19. restart proxy server
+
+    swift-init account start
+
+    swift-init container start
+
+    swift-init object start
+
+
+    swift-init proxy restart
+
+
+20. Account Authentication
+
+    curl -v -H 'X-Auth-User: myaccount:me' -H 'X-Auth-Key: secretpassword' http://localhost:8080/auth/v1.0/
+    (
+        grab the auth token from the output
+            < X-Auth-Token: AUTH_tk7207326469344e16b5367571081628c6
+    )
+21. Verifying Account Access
+
+    curl -v -H 'X-Storage-Token: AUTH_tk7207326469344e16b5367571081628c6' http://127.0.0.1:8080/v1/AUTH_myaccount/
+
+22. Creating a Container
+
+    curl -v -H 'X-Storage-Token: AUTH_tk7207326469344e16b5367571081628c6' -X PUT http://127.0.0.1:8080/v1/AUTH_myaccount/mycontainer
+
+23. uploading file to the container
+
+    swift -A http://127.0.0.1:8080/auth/v1.0/ -U myaccount:me -K secretpassword upload mycontainer te
+
+24. Configuring rsync
+
+    setenforce Permissive
+    setsebool -P rsync_full_access 1
+    systemctl enable rsyncd.service
+
+
+
+25. vim /etc/rsyncd.conf
+
+    add line
+        uid = swift
+        gid = swift
+        log file = /var/log/rsyncd.log
+        pid file = /var/run/rsyncd.pid
+
+        [account]
+        max connections = 25
+        path = /srv/node/
+        read only = false
+        lock file = /var/lock/account.lock
+
+        [container]
+        max connections = 25
+        path = /srv/node/
+        read only = false
+        lock file = /var/lock/container.lock
+
+        [object]
+        max connections = 25
+        path = /srv/node/
+        read only = false
+        lock file = /var/lock/object.lock
+
+
+26. service xinetd restart
+
+    rsync localhost::
+    rsync localhost::account
+    rsync localhost::container
+    rsync localhost::object
+
+27. Starting the Remaining Consistency Processes
+
+    swift-init account-replicator start
+    swift-init container-replicator start
+    swift-init object-replicator start
+
+28. swift-init all start
+
+end :D
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
