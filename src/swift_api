@@ -1,0 +1,13 @@
+[get authentication token]
+curl -v -H 'X-Auth-User: myaccount:me' -H 'X-Auth-Key: secretpassword' http://localhost:8080/auth/v1.0/
+
+
+1. [donwload]
+
+curl -i -X GET -H "X-Auth-Token: AUTH_tk8bf07349d36041339450f0b46a2adc39" "http://localhost:8080/v1/AUTH_myaccount/"
+
+2. [upload]
+
+curl -i -X PUT -H "X-Auth-Token: $TOKEN" $STORAGE_URL/my_music
+
+curl -i -X PUT -H "X-Auth-Token: AUTH_tk8bf07349d36041339450f0b46a2adc39" "http://localhost:8080/v1/AUTH_myaccount/my_docs/file_name_with_extension" -T /location/of/file
