@@ -1,0 +1,36 @@
+1. Programming basic
+
+    1a. writing hello world
+
+        print "hello world"
+        cout >> "hello world";
+        System.out.println("hello world");
+
+    1b. variable
+
+        var1 = 10
+        int var1 = 10
+
+        print var1
+
+        var2 = "hello world"
+        print var2
+
+    1c. operation
+
+        1c1. addition, subtraction, multiplication, division, remainder
+
+            var_result = var1 + var2
+            var_result = var1 - var2
+            var_result = var1 * var2
+            var_result = var1 / var2
+            var_result = var1 % var2
+
+            print var_result
+
+    1d. condition
+
+        if-else-else if
+
+
+

@@ -4,7 +4,7 @@ curl -v -H 'X-Auth-User: myaccount:me' -H 'X-Auth-Key: secretpassword' http://lo
 
 1. [donwload]
 
-curl -i -X GET -H "X-Auth-Token: AUTH_tk8bf07349d36041339450f0b46a2adc39" "http://localhost:8080/v1/AUTH_myaccount/"
+curl -i -X GET -H "X-Auth-Token: AUTH_tka0ff3c3071774baa960777529063961c" "http://localhost:8080/v1/AUTH_myaccount/"
 
 2. [upload]
 
