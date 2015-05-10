@@ -5,13 +5,12 @@
 
 
 
-try:
-    x = int(raw_input("Please enter a number: "))
-    print 8/0
-except ValueError:
-    print "Oops!  That was no valid number.  Try again..."
-except:
-    print "gen error"
+class Dad:
+    def __call__(self, xx):
+        print xx
+
+dd = Dad()
+dd(22)
 
 
 

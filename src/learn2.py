@@ -130,6 +130,13 @@ class Child1(Parent):
     def __init__(self, x=0):
         self.x = x
 
+
+    def __call__(self, xx):
+        print xx
+
+# dd = Dad()
+# dd(22)
+
     def hello1(self, var2):
         print "over load"
 
